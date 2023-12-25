@@ -43,7 +43,6 @@ func main() {
 
 	http.HandleFunc("/", databaseHandler.Index)
 	http.HandleFunc("/get-info", databaseHandler.GetInfo)
-	http.HandleFunc("/add-info", databaseHandler.AddInfo)
 
 	fmt.Println("Запуск сервера...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
