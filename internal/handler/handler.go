@@ -75,19 +75,3 @@ func (h *DatabaseHandler) GetInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
-func (h *DatabaseHandler) AddInfo(w http.ResponseWriter, r *http.Request) {
-	// Получаем данные из формы
-	orderUID := r.FormValue("orderUID")
-
-	// Вызываем метод для добавления данных
-	id, addedOrderUID, err := h.databaseService.AddAndCacheData(orderUID)
-	if err != nil {
-		http.Error(w, "Ошибка при добавлении данных", http.StatusInternalServerError)
-		log.Printf("Ошибка при добавлении данных: %v", err)
-		return
-	}
-
-	// Выводим какую-то информацию о добавленных данных
-	fmt.Fprintf(w, "Добавлены новые данные. ID: %d, OrderUID: %s", id, addedOrderUID)
-}
