@@ -38,21 +38,3 @@ func (s *DatabaseService) GetInfo(number int) (string, error) {
 	return jsonData, nil
 }
 
-func (s *DatabaseService) AddAndCacheData(orderUID string) (int, string, error) {
-	// Вставляем новые данные в базу и получаем возвращенный ID
-	var newID int
-	err := s.db.QueryRow("INSERT INTO Json_Info (Name_Json_Info) VALUES ($1) RETURNING ID_Json_Info", orderUID).Scan(&newID)
-	if err != nil {
-		return 0, "", fmt.Errorf("ошибка при добавлении данных в базу: %v", err)
-	}
-
-	// Сохраняем данные в кэше
-	newCacheData := Cache{OrderUID: orderUID}
-	s.cache[newID] = newCacheData
-
-	// Отправляем сообщение в NATS
-	message := fmt.Sprintf("Добавлены новые данные: %s", orderUID)
-	s.nc.Publish("log", []byte(message))
-
-	return newID, orderUID, nil
-}
