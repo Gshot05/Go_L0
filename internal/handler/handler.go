@@ -23,16 +23,16 @@ func (h *DatabaseHandler) Index(w http.ResponseWriter, r *http.Request) {
 	// Парсим шаблон
 	tmpl, err := template.ParseFiles("../../web/index.html")
 	if err != nil {
-		http.Error(w, "ошибка парсинга шаблона", http.StatusInternalServerError)
-		log.Println("ошибка парсинга шаблона:", err)
+		http.Error(w, "Ошибка парсинга шаблона", http.StatusInternalServerError)
+		log.Println("Ошибка парсинга шаблона:", err)
 		return
 	}
 
 	// Отображаем шаблон
 	err = tmpl.Execute(w, nil)
 	if err != nil {
-		http.Error(w, "ошибка отображения шаблона", http.StatusInternalServerError)
-		log.Println("ошибка отображения шаблона:", err)
+		http.Error(w, "Ошибка отображения шаблона", http.StatusInternalServerError)
+		log.Println("Ошибка отображения шаблона:", err)
 		return
 	}
 }
@@ -54,8 +54,8 @@ func (h *DatabaseHandler) GetInfo(w http.ResponseWriter, r *http.Request) {
 	// Парсим шаблон
 	tmpl, err := template.ParseFiles("../../web/index.html")
 	if err != nil {
-		http.Error(w, "ошибка парсинга шаблона", http.StatusInternalServerError)
-		log.Println("ошибка парсинга шаблона:", err)
+		http.Error(w, "Oшибка парсинга шаблона", http.StatusInternalServerError)
+		log.Println("Oшибка парсинга шаблона:", err)
 		return
 	}
 
@@ -70,8 +70,24 @@ func (h *DatabaseHandler) GetInfo(w http.ResponseWriter, r *http.Request) {
 
 	err = tmpl.Execute(w, data)
 	if err != nil {
-		http.Error(w, "ошибка отображения шаблона", http.StatusInternalServerError)
-		log.Println("ошибка отображения шаблона:", err)
+		http.Error(w, "Ошибка отображения шаблона", http.StatusInternalServerError)
+		log.Println("Ошибка отображения шаблона:", err)
 		return
 	}
+}
+
+func (h *DatabaseHandler) AddData(w http.ResponseWriter, r *http.Request) {
+	// Получаем данные из формы
+	jsonData := r.FormValue("jsonData")
+
+	// Вызываем метод для добавления данных
+	id, err := h.databaseService.AddData(jsonData)
+	if err != nil {
+		http.Error(w, "Ошибка при добавлении данных", http.StatusInternalServerError)
+		log.Printf("Ошибка при добавлении данных: %v", err)
+		return
+	}
+
+	// Выводим какую-то информацию о добавленных данных
+	fmt.Fprintf(w, "Добавлены новые данные. ID: %d", id)
 }
