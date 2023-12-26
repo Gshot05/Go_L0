@@ -28,7 +28,7 @@ func main() {
 	defer db.Close()
 
 	//Подключение к натс
-	natsURL := "localhost:"
+	natsURL := "localhost"
 	log.Println("Подключение NATS...")
 	nc, err = nats.Connect(natsURL)
 	if err != nil {
@@ -43,6 +43,7 @@ func main() {
 
 	http.HandleFunc("/", databaseHandler.Index)
 	http.HandleFunc("/get-info", databaseHandler.GetInfo)
+	http.HandleFunc("/add-info", databaseHandler.AddData)
 
 	fmt.Println("Запуск сервера...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
