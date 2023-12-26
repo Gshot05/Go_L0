@@ -7,8 +7,9 @@ CREATE TABLE Json_Info(
 create role goadmin with password 'P@$$vv0RD';
 alter role goadmin LOGIN;
 grant connect on database "GoDataBase" to goadmin;
+ALTER TABLE Json_Info OWNER TO goadmin;
 
-grant select, update, insert, delete on Json_Info to goadmin;
+Select * from Json_Info
 
 INSERT INTO Json_Info (Name_Json_Info) VALUES
 ('{
@@ -61,4 +62,3 @@ INSERT INTO Json_Info (Name_Json_Info) VALUES
   "oof_shard": "1"
 }');
 
-Select * from Json_Info;
